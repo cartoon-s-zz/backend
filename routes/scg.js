@@ -72,8 +72,12 @@ async function findingRestaurant(req, res) {
     // console.log('data=====>', body)
     var obj = JSON.parse(body);
     for (let i of obj.results) {
-      // console.log(i.name);
-      data.push(i.name);
+      let temp = {
+        vicinity: i.vicinity,
+        rating: i.rating,
+        name: i.name
+      }
+      data.push(temp);
     }
     let url2 = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat + 0.001},${lng + 0.015}&radius=1000&type=restaurant&key=${YOUR_API_KEY}`
 
@@ -85,7 +89,12 @@ async function findingRestaurant(req, res) {
       // console.log(body);
       for (let i of obj.results) {
         // console.log(i.name);
-        data.push(i.name);
+        let temp = {
+          vicinity: i.vicinity,
+          rating: i.rating,
+          name: i.name
+        }
+        data.push(temp);
       }
       return res.send(_.uniqBy(data));
     });
