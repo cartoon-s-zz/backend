@@ -1,13 +1,7 @@
-const express = require('express');
-const router = express.Router()
 var request = require('request');
 var _ = require('lodash');
-var scgController = require('../controller/scgController');
 
-router.get('/findxyz', scgController.findParameter);
-router.get('/findingRestaurant', scgController.findResByPlace);
-
-async function findxyz(req, res) {
+exports.findParameter = function (req, res) {
   const arr = ['x', 5, 9, 15, 23, 'y', 'z'];
   let mul = 2;
   let indexOfX;
@@ -55,9 +49,9 @@ async function findxyz(req, res) {
     'z': arr[indexOfZ]
   }
   return res.send({ result: data });
-}
+};
 
-async function findingRestaurant(req, res) {
+exports.findResByPlace = function (req, res) {
   let YOUR_API_KEY = 'AIzaSyB5IlVNYMbdKdh-Ika4ZvnOCztHWhItyKw';
   let lat = 13.804983;
   let lng = 100.536200;
@@ -100,8 +94,4 @@ async function findingRestaurant(req, res) {
       return res.send(_.uniqBy(data));
     });
   });
-
 }
-
-
-export default router;
