@@ -56,7 +56,9 @@ exports.findResByPlace = function (req, res) {
   let lat = 13.804983;
   let lng = 100.536200;
   // let url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants&location=${lat},${lng}radius=10000&key=${YOUR_API_KEY}`;
-  let url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=1000&type=restaurant&key=${YOUR_API_KEY}`
+  // let url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=1000&type=restaurant&key=${YOUR_API_KEY}`
+  let url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+BangSue&type=restaurant&key=${YOUR_API_KEY}`
+  console.log(url);
   let data = [];
   request(url, function (error, response, body) {
     if (error) {
@@ -68,30 +70,31 @@ exports.findResByPlace = function (req, res) {
     var obj = JSON.parse(body);
     for (let i of obj.results) {
       let temp = {
-        vicinity: i.vicinity,
+        vicinity: i.formatted_address,
         rating: i.rating,
         name: i.name
       }
       data.push(temp);
     }
-    let url2 = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat + 0.001},${lng + 0.015}&radius=1000&type=restaurant&key=${YOUR_API_KEY}`
+    // let url2 = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat + 0.001},${lng + 0.015}&radius=1000&type=restaurant&key=${YOUR_API_KEY}`
+    // let url2 = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+BangSue&type=restaurant&key=${YOUR_API_KEY}`
 
-    request(url2, function (error, response, body) {
-      if (error) {
-        throw error; //error happen
-      }
-      var obj = JSON.parse(body);
-      // console.log(body);
-      for (let i of obj.results) {
-        // console.log(i.name);
-        let temp = {
-          vicinity: i.vicinity,
-          rating: i.rating,
-          name: i.name
-        }
-        data.push(temp);
-      }
-      return res.send(_.uniqBy(data));
-    });
+    // request(url2, function (error, response, body) {
+    //   if (error) {
+    //     throw error; //error happen
+    //   }
+    //   var obj = JSON.parse(body);
+    //   // console.log(body);
+    //   for (let i of obj.results) {
+    //     // console.log(i.name);
+    //     let temp = {
+    //       vicinity: i.vicinity,
+    //       rating: i.rating,
+    //       name: i.name
+    //     }
+    //     data.push(temp);
+    //   }
+    return res.send(_.uniqBy(data));
+    // });
   });
 }
